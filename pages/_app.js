@@ -1,17 +1,26 @@
-import { ChakraProvider } from "@chakra-ui/react"
+import { Center, ChakraProvider, Spinner, } from "@chakra-ui/react"
+import { useAuthState } from 'react-firebase-hooks/auth'
 import Login from "../components/Login"
-import Sidebar from "../components/Sidebar"
+import { auth } from '../utils/firebaseConfig'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
-  // return <Component {...pageProps} />
+  const [user, loading, error] = useAuthState(auth);
+
   return (
     <ChakraProvider>
-      {/* <Login /> */}
-      {/* <Sidebar /> */}
-      <Component {...pageProps} />
+      {
+        loading && <Center h='100vh'>
+          <Spinner size='xl' />
+        </Center>
+      }
+      {
+        user ? <Component {...pageProps} /> :
+          <Login />
+      }
     </ChakraProvider>
   )
 }
 
 export default MyApp
+// 1:06:00
